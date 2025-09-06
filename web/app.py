@@ -6,15 +6,17 @@ from bson import ObjectId
 
 app = Flask(__name__)
 
-mongo_uri  = os.environ.get("MONGO_URI")
-db_name    = os.environ.get("DB_NAME")
+mongo_uri = os.environ.get("MONGO_URI")
+db_name = os.environ.get("DB_NAME")
 client = MongoClient(mongo_uri)
 db = client[db_name]
 routers = db["routers"]
 
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html", routers=list(routers.find()))
+
 
 @app.route("/add", methods=["POST"])
 def add_router():
@@ -30,16 +32,20 @@ def add_router():
         })
     return redirect("/")
 
+
 @app.route("/delete/<id>", methods=["POST"])
 def delete_router(id):
     routers.delete_one({"_id": ObjectId(id)})
     return redirect("/")
 
+
 interface_status = db["interface_status"]
+
 
 @app.route("/router/<ip>", methods=["GET"])
 def router_detail(ip):
-    docs = db.interface_status.find({"router_ip": ip}).sort("timestamp", -1).limit(3)
+    docs = db.interface_status.find(
+        {"router_ip": ip}).sort("timestamp", -1).limit(3)
     return render_template("router_detail.html", router_ip=ip, interface_data=docs)
 
 
