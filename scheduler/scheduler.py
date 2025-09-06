@@ -1,5 +1,5 @@
 import time
-import pika
+
 
 from bson import json_util
 from producer import produce
