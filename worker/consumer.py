@@ -7,6 +7,8 @@ from callback import callback
 user = os.getenv("RABBITMQ_DEFAULT_USER")
 pwd = os.getenv("RABBITMQ_DEFAULT_PASS")
 
+# s
+
 
 def consume(host):
     for attempt in range(10):
